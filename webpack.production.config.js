@@ -4,9 +4,12 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: {
+    main: "./src/main.js",
+    second: "./src/second.js",
+  },
   output: {
-    filename: "bundle.[contenthash].js",
+    filename: "[name].[contenthash].js",
     path: path.resolve(__dirname, "./dist"),
     publicPath: "",
   },
@@ -53,12 +56,23 @@ module.exports = {
     ],
   },
   plugins: [
-    new MiniCssExtractPlugin({ filename: "styles.[contenthash].css" }),
+    new MiniCssExtractPlugin({ filename: "[name].[contenthash].css" }),
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      title: "Template",
+      filename: "main.html",
+      chunks: ["main"],
+      title: "Main",
       template: "src/template-page.hbs",
-      description: "Template",
+      description: "Main page",
+      minify: false,
+    }),
+    new HtmlWebpackPlugin({
+      filename: "second.html",
+      chunks: ["second"],
+      title: "Second",
+      template: "src/template-page.hbs",
+      description: "Second page",
+      minify: false,
     }),
   ],
 };
